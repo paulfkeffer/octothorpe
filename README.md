@@ -1,7 +1,7 @@
 # Game Server
 
 ## Requirements
-This server runs on python. I used version 3.10 (latest version).
+This server runs on python. I used version 3.10 (latest version).   
 You must also have the twisted package installed. You can do this using <code>pip install twisted</code> or <code>pip3 install twisted</code>
 
 ## Starting the server
