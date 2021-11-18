@@ -20,8 +20,8 @@ You will automaticly be notified when ever a player move and/or finds a treasure
 If you quit the game and then join, your location and points will be renembered.   
 If sombody finds a treasure, then the point value is awarded to them, and the treasure is removed from the map.   
 When the server is started a list of treasures is automaticly populated with each being at a random location with a random point value.   
-There is currently no command to get the status of the players. Player status is automaticly posted whenever a player moves.
-This map has no obstacles or hidden areas.
+There is currently no command to get the status of the players. Player status is automaticly posted whenever a player moves.   
+This map has no obstacles or hidden areas.   
 Because of the lack of obstacles, the players aren't given the locations of the treasures.
 
 ## Console/debug
