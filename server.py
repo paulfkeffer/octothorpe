@@ -19,6 +19,7 @@ class ReadWriteContent(Protocol):
                 if self.loggedIn == True:
                     self.transport.write(bytes("400:Already logged in\r\n", "utf-8"))
                 else:
+                    self.sendMap()
                     knownPlayer = False
                     if len(value) < 9:
                         self.transport.write(bytes("400:Expected a name and got nothing\r\n", "utf-8"))
@@ -45,6 +46,11 @@ class ReadWriteContent(Protocol):
                     self.transport.write(bytes("400:You must login first\r\n", "utf-8"))
                 else:
                     self.move(str(data[5:-2], "utf-8"))
+            elif value.startswith('map'):
+                if self.loggedIn == False:
+                    self.transport.write(bytes("400:You must login first\r\n", "utf-8"))
+                else:
+                    self.sendMap()
             elif value.startswith('quit'):
                 self.transport.write(bytes("200:Goodbye!\r\n", "utf-8"))
                 self.transport.loseConnection()
@@ -77,30 +83,38 @@ class ReadWriteContent(Protocol):
                 toSend = bytes(f"101:{playerData[0]}, {playerData[1]}, {playerData[2]}, {playerData[3]}\r\n", "utf-8")
                 player.transport.write(toSend)
 
+    def sendMap(self):
+        self.transport.write(bytes("200:Ok\r\n", "utf-8"))
+        self.transport.write(bytes("104:20, 20\r\n", "utf-8"))
+        self.transport.write(bytes("104:####################\r\n", "utf-8"))
+        for x in range(0, 18):
+            self.transport.write(bytes("104:#                  #\r\n", "utf-8"))
+        self.transport.write(bytes("104:####################\r\n", "utf-8"))
+
     def move(self, direction):
         self.transport.write(bytes(f"200:move {direction}\r\n", "utf-8"))
         playerData = self.factory.listPlayers[self]
         moved = False
         if direction == 'north':
-            if playerData[1] == self.factory.gridYSize:
+            if playerData[1] == self.factory.gridYSize-1:
                 self.transport.write(bytes("400:Invalid Move\r\n", "utf-8"))
             else:
                 playerData[1] = playerData[1]+1
                 moved = True
         elif direction == 'south':
-            if playerData[1] == 0:
+            if playerData[1] == 1:
                 self.transport.write(bytes("400:Invalid Move\r\n", "utf-8"))
             else:
                 playerData[1] = playerData[1]-1
                 moved = True
         elif direction == 'west':
-            if playerData[2] == 0:
+            if playerData[2] == 1:
                 self.transport.write(bytes("400:Invalid Move\r\n", "utf-8"))
             else:
                 playerData[2] = playerData[2]-1
                 moved = True
         elif direction == 'east':
-            if playerData[2] == self.factory.gridXSize:
+            if playerData[2] == self.factory.gridXSize-1:
                 self.transport.write(bytes("400:Invalid Move\r\n", "utf-8"))
             else:
                 playerData[2] = playerData[2]+1
