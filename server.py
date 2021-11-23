@@ -19,19 +19,23 @@ class ReadWriteContent(Protocol):
                 if self.loggedIn == True:
                     self.transport.write(bytes("400:Already logged in\r\n", "utf-8"))
                 else:
-                    self.sendMap()
                     knownPlayer = False
                     if len(value) < 9:
                         self.transport.write(bytes("400:Expected a name and got nothing\r\n", "utf-8"))
                     else:
                         for key,value in self.factory.listPlayers.items():
                             if value[0] == str(data[6:-2], "utf-8"):
-                                self.factory.listPlayers[self] = self.factory.listPlayers.pop(key)
-                                knownPlayer = True
-                                self.factory.listPlayers[self][4] = True
-                                break
+                                if self.factory.listPlayers[key][4] == False:
+                                    self.factory.listPlayers[self] = self.factory.listPlayers.pop(key)
+                                    knownPlayer = True
+                                    self.factory.listPlayers[self][4] = True
+                                    break
+                                else:
+                                    self.transport.write(bytes('400:Name already taken\r\n', "utf-8"))
+                                    return
                         if knownPlayer == False:
                             self.factory.listPlayers[self] = [str(data[6:-2], 'utf-8'),1,1,0,True]
+                        self.sendMap()
                         self.loggedIn = True
                         welcome = bytes('200:Welcome to Octothorpe # The Game\r\n', "utf-8")
                         self.transport.write(welcome)
