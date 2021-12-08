@@ -27,3 +27,16 @@ Because of the lack of obstacles, the players aren't given the locations of the 
 ## Console/debug
 The script will print a message whenever a new connection is made.   
 For now, the locations of the treasures are printed at startup. This is for testing/debuging purposes.
+
+# Client
+
+## Requirements
+This client runs on python. I used version 3.10 (latest version). 
+You must also have the tkinter package installed. You can do this using <code>pip install tk</code> or <code>pip3 install tk</code>
+
+## Starting the client
+To start the client run <code>python client.py</code> or <code>python3 client.py</code>. This will start the client.  
+By default this will connect to the server localhost on port 8000. To change this update the relevent lines at the beginning of client.py.
+
+## Using the client
+This is a GUI application. First you will be prompted to enter your name. Then, you can click the button, or press the enter key on your keyboard to proceed. If you accidently entered an invalid name and submited it, you will need to close the client and re-launch it. On the next screen, you can type out the commands in the box, and either click the button or press the enter key on your keyboard to send it. Optionally you can use the arrow keys to move rapidly. Pressing the up arrow key will cause you to move north, the down arrow key will move you south, the left arrow key will move you west and the right arrow key will move you east.
